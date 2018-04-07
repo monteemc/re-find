@@ -4,7 +4,7 @@ import os
 import re
 
 # Argument processing
-version = "0.0.1"
+version = "0.0.3"
 parser = argparse.ArgumentParser(
     description="file search with regular expressions!",
     epilog="(C) 2018 Fabio 'Monte' Sant'Anna")
@@ -23,8 +23,10 @@ if not args.recursive:
 c = 0
 for directory in walker:
     path, _, files = directory
-    found = [path + "/" + x for x in files
-             if re.search(args.PATTERN, x, 0) is not None]
+    # os.sep[0] if necessary in windows ('\\')!
+    #               vvvvvv
+    found = [path + os.sep + x for x in files
+             if re.search(args.PATTERN, x, 0) is not None] 
     c = c + len(found)
     for name in found:
         print(name)
